@@ -563,10 +563,28 @@
         let currentStudent = null;
 
         // --- Core Logic ---
+        const APP_VERSION = 2; // Increment when data structure changes significantly
+
         function init() {
             const stored = localStorage.getItem('little_kites_db');
             if (stored) {
                 db = JSON.parse(stored);
+
+                // Check for version mismatch (Force Reset for New List)
+                if (!db.version || db.version < APP_VERSION) {
+                    alert("App Updated: Loading new student list (43 students from new batch). Old data has been reset for compatibility.");
+                    localStorage.removeItem('little_kites_db'); // Clear old data
+                    db = {
+                        version: APP_VERSION,
+                        schools: [DEFAULT_SCHOOL],
+                        currentSchool: DEFAULT_SCHOOL,
+                        students: DEFAULT_STUDENTS.map(s => ({ ...s, school: DEFAULT_SCHOOL })),
+                        progress: {}
+                    };
+                    save();
+                }
+
+                // Migration for old format (without schools)
                 if (!db.schools) {
                     db.schools = [DEFAULT_SCHOOL];
                     db.currentSchool = DEFAULT_SCHOOL;
@@ -574,7 +592,14 @@
                     save();
                 }
             } else {
-                db.students = DEFAULT_STUDENTS.map(s => ({ ...s, school: DEFAULT_SCHOOL }));
+                // First time setup
+                db = {
+                    version: APP_VERSION,
+                    schools: [DEFAULT_SCHOOL],
+                    currentSchool: DEFAULT_SCHOOL,
+                    students: DEFAULT_STUDENTS.map(s => ({ ...s, school: DEFAULT_SCHOOL })),
+                    progress: {}
+                };
                 save();
             }
 
