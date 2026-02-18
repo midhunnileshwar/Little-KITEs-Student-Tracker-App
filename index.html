@@ -272,8 +272,9 @@
     <div class="app-container">
         <!-- Navbar -->
         <div class="navbar">
-            <h1>🪁 Little KITEs Tracker</h1>
+            <h1 id="app-title">🪁 Little KITEs Tracker</h1>
             <div class="nav-links">
+                <button class="nav-btn" onclick="showView('school-select')">🏫 School</button>
                 <button class="nav-btn active" onclick="showView('students')">Students</button>
                 <button class="nav-btn" onclick="showView('reports')">Reports</button>
             </div>
@@ -282,16 +283,41 @@
         <!-- Main Content -->
         <div class="main-content">
 
+            <!-- View: School Selection -->
+            <div id="view-school-select" class="view">
+                <div class="card text-center" style="padding: 40px 20px;">
+                    <h2>Welcome, Trainer!</h2>
+                    <p>Select your school to begin tracking.</p>
+
+                    <select id="school-select-dropdown" class="search-bar" style="margin-top:20px;">
+                        <!-- Populated via JS -->
+                    </select>
+
+                    <button class="btn-large done" style="margin-top:20px;" onclick="selectSchool()">Start Tracking
+                        &rarr;</button>
+
+                    <hr style="margin: 30px 0; border: 0; border-top: 1px solid #eee;">
+
+                    <h3>Add New School</h3>
+                    <input type="text" id="new-school-name" class="search-bar" placeholder="Enter School Name...">
+                    <button class="btn-large" onclick="addNewSchool()">+ Add School</button>
+                </div>
+            </div>
+
             <!-- View: Student List -->
             <div id="view-students" class="view active">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                    <h3 id="current-school-display" style="margin:0; font-size:1rem; color:#666;"></h3>
+                    <button onclick="showView('school-select')"
+                        style="padding:5px 10px; font-size:0.8rem; background:#eee; border:none; border-radius:5px;">Change
+                        School</button>
+                </div>
+
                 <input type="text" id="student-search" class="search-bar" placeholder="Search by Name or ID..."
                     onkeyup="renderStudentList()">
+
                 <div id="student-list-container">
                     <!-- Students rendered here -->
-                </div>
-                <div class="text-center mt-2">
-                    <button class="btn-large" style="background:#333;color:white;" onclick="resetDatabase()">⚠️ Reset
-                        Data</button>
                 </div>
             </div>
 
@@ -420,16 +446,28 @@
             <!-- View: Reports -->
             <div id="view-reports" class="view">
                 <h2>Generate Reports</h2>
+
                 <div class="card">
+                    <h3>One-Click Batch Report</h3>
+                    <p>Download a single PDF with reports for ALL students in the current school.</p>
+                    <button class="btn-large done" onclick="generateBatchPDF()">📑 Generate Entire Batch Report</button>
+                </div>
+
+                <div class="card">
+                    <h3>Individual Report</h3>
                     <p>Select a student to generate their performance report.</p>
                     <select id="report-student-select" class="search-bar" style="margin-bottom:20px;">
                         <!-- Populated via JS -->
                     </select>
-                    <button class="btn-large done" onclick="generatePDF()">📄 Download PDF Report</button>
+                    <button class="btn-large" onclick="generatePDF()">📄 Download Single Report</button>
                 </div>
+
                 <div class="card">
-                    <h3>Data Management</h3>
-                    <button class="btn-large" onclick="downloadBackup()">💾 Backup Data (JSON)</button>
+                    <h3>Settings & Data</h3>
+                    <button class="btn-large" style="margin-bottom:10px;" onclick="downloadBackup()">💾 Backup Data
+                        (JSON)</button>
+                    <button class="btn-large" style="background:#444; color:white; font-size:0.9rem;"
+                        onclick="secureReset()">⚠️ Hard Reset (Requires Code)</button>
                 </div>
             </div>
 
@@ -438,6 +476,7 @@
 
     <script>
         // --- Data Initialization ---
+        const DEFAULT_SCHOOL = "Rajahs H.S.S Nileshwar";
         const DEFAULT_STUDENTS = [
             { id: 1, name: "ABDUL WAJID PALAKKI", adm: "38266" },
             { id: 2, name: "ABHINAV K T", adm: "38272" },
@@ -485,32 +524,92 @@
         ];
 
         let db = {
+            schools: [DEFAULT_SCHOOL],
+            currentSchool: DEFAULT_SCHOOL,
             students: [],
-            progress: {} // format: { studentId: { session: { activity: { status: 'Done', stars: 3 } } } }
+            progress: {}
         };
+
+        let currentStudent = null;
 
         // --- Core Logic ---
         function init() {
             const stored = localStorage.getItem('little_kites_db');
             if (stored) {
                 db = JSON.parse(stored);
+                // Migration for old format (without schools)
+                if (!db.schools) {
+                    db.schools = [DEFAULT_SCHOOL];
+                    db.currentSchool = DEFAULT_SCHOOL;
+                    db.students.forEach(s => s.school = DEFAULT_SCHOOL);
+                    save();
+                }
             } else {
-                db.students = DEFAULT_STUDENTS;
+                // First time setup
+                db.students = DEFAULT_STUDENTS.map(s => ({ ...s, school: DEFAULT_SCHOOL }));
                 save();
             }
-            renderStudentList();
-            renderReportSelect();
+
+            // Show School Select first
+            renderSchoolDropdown();
+            showView('school-select');
+
+            // Populate specific UI elements
+            document.getElementById('current-school-display').innerText = db.currentSchool;
         }
 
         function save() {
             localStorage.setItem('little_kites_db', JSON.stringify(db));
         }
 
-        function resetDatabase() {
-            if (confirm("Are you sure? This will erase all progress.")) {
+        function secureReset() {
+            const code = prompt("Please type 'DELETE' (all caps) to erase all data for ALL schools.");
+            if (code === "DELETE") {
                 localStorage.removeItem('little_kites_db');
                 location.reload();
+            } else {
+                alert("Reset cancelled or incorrect code.");
             }
+        }
+
+        // --- School Management ---
+        function renderSchoolDropdown() {
+            const sel = document.getElementById('school-select-dropdown');
+            sel.innerHTML = '';
+            db.schools.forEach(school => {
+                const opt = document.createElement('option');
+                opt.value = school;
+                opt.innerText = school;
+                sel.appendChild(opt);
+            });
+            // Select last used school default
+            if (db.currentSchool) sel.value = db.currentSchool;
+        }
+
+        function addNewSchool() {
+            const name = document.getElementById('new-school-name').value.trim();
+            if (!name) return;
+
+            if (!db.schools.includes(name)) {
+                db.schools.push(name);
+                save();
+                renderSchoolDropdown();
+                document.getElementById('school-select-dropdown').value = name;
+                alert(`School '${name}' added!`);
+            } else {
+                alert("School already exists.");
+            }
+            document.getElementById('new-school-name').value = '';
+        }
+
+        function selectSchool() {
+            const sel = document.getElementById('school-select-dropdown');
+            db.currentSchool = sel.value;
+            save();
+
+            document.getElementById('current-school-display').innerText = db.currentSchool;
+            renderStudentList(); // Re-render for new school
+            showView('students');
         }
 
         // --- UI Navigation ---
@@ -520,9 +619,14 @@
 
             document.getElementById('view-' + viewId).classList.add('active');
 
-            // Highlight Nav
-            if (viewId === 'students') document.querySelector('.nav-btn:first-child').classList.add('active');
-            if (viewId === 'reports') document.querySelector('.nav-btn:last-child').classList.add('active');
+            // Highlight Nav Logic
+            const navs = document.querySelectorAll('.nav-btn');
+            if (viewId === 'school-select') navs[0].classList.add('active');
+            if (viewId === 'students') navs[1].classList.add('active');
+            if (viewId === 'reports') {
+                navs[2].classList.add('active');
+                renderReportSelect();
+            }
         }
 
         function switchSession(sessionId) {
@@ -538,16 +642,24 @@
         }
 
         // --- Student List ---
-        let currentStudent = null;
+        function getCurrentSchoolStudents() {
+            return db.students.filter(s => s.school === db.currentSchool || (!s.school && db.currentSchool === DEFAULT_SCHOOL));
+        }
 
         function renderStudentList() {
             const container = document.getElementById('student-list-container');
             const search = document.getElementById('student-search').value.toLowerCase();
             container.innerHTML = '';
 
+            const visibleStudents = getCurrentSchoolStudents();
             let serialNo = 1;
 
-            db.students.forEach(s => {
+            if (visibleStudents.length === 0) {
+                container.innerHTML = `<p class="text-center" style="color:#777; padding:20px;">No students found for ${db.currentSchool}.<br><small>(Add Student feature coming soon)</small></p>`;
+                return;
+            }
+
+            visibleStudents.forEach(s => {
                 if (s.name.toLowerCase().includes(search) || s.adm.toString().includes(search)) {
                     const div = document.createElement('div');
                     div.className = 'student-item';
@@ -580,7 +692,7 @@
         function openStudentTracker(student) {
             currentStudent = student;
             document.getElementById('tracker-student-name').innerText = student.name;
-            document.getElementById('tracker-student-id').innerText = `ADM: ${student.adm} | School: Rajahs H.S.S Nileshwar`;
+            document.getElementById('tracker-student-id').innerText = `ADM: ${student.adm} | ${db.currentSchool}`;
 
             showView('tracker');
             refreshTrackerUI();
@@ -606,6 +718,7 @@
         }
 
         function getProgress(session, activity) {
+            if (!currentStudent) return null;
             if (!db.progress[currentStudent.id]) return null;
             if (!db.progress[currentStudent.id][session]) return null;
             return db.progress[currentStudent.id][session][activity];
@@ -685,7 +798,8 @@
         function renderReportSelect() {
             const sel = document.getElementById('report-student-select');
             sel.innerHTML = '<option value="">-- Select Student --</option>';
-            db.students.forEach(s => {
+            const visibleStudents = getCurrentSchoolStudents();
+            visibleStudents.forEach(s => {
                 const opt = document.createElement('option');
                 opt.value = s.id;
                 opt.textContent = `${s.adm} - ${s.name}`;
@@ -703,15 +817,32 @@
             downloadAnchorNode.remove();
         }
 
-        function generatePDF() {
-            const sel = document.getElementById('report-student-select');
-            const sId = sel.value;
-            if (!sId) { alert("Please select a student first."); return; }
+        // REPORT LOGIC
+        const skillMap = {
+            "Layers Split": "Proficient in OpenToonz layer management and scene composition.",
+            "Loop Logic": "Demonstrated understanding of animation loops and frame timing.",
+            "Export Success": "Mastered OpenToonz export settings and video rendering.",
+            "Arrow Logic": "Implemented coordinate-based sprite movement (X/Y axis logic).",
+            "Mouse Follow": "Created interactive event loops and mouse-tracking logic.",
+            "Debugging": "Demonstrated logical thinking by identifying/fixing code bugs.",
+            "Resistor Safety": "Safely constructed LED circuits with proper resistor placement.",
+            "Upload Mode": "Successfully compiled and uploaded code to Arduino hardware.",
+            "Servo Test": "Programmed servo motors for precise angular control."
+        };
 
-            const student = db.students.find(s => s.id == sId);
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
+        const sessions = {
+            's1': 'Session 1: Animation (OpenToonz)',
+            's2': 'Session 2: Programming (Scratch/TurboWarp)',
+            's3': 'Session 3: Robotics (Arduino)'
+        };
 
+        const sessionMap = {
+            's1': ['Layers Split', 'Loop Logic', 'Export Success'],
+            's2': ['Arrow Logic', 'Mouse Follow', 'Debugging'],
+            's3': ['Resistor Safety', 'Upload Mode', 'Servo Test']
+        };
+
+        function addStudentPageToPDF(doc, student) {
             // Header
             doc.setFontSize(18);
             doc.setFont("helvetica", "bold");
@@ -721,48 +852,21 @@
             doc.setFont("helvetica", "normal");
             doc.text(`Name: ${student.name}`, 15, 30);
             doc.text(`Admission No: ${student.adm}`, 15, 37);
-            doc.text(`School Unit: Rajahs H.S.S Nileshwar`, 15, 44);
+            doc.text(`School Unit: ${db.currentSchool}`, 15, 44);
             doc.line(15, 48, 195, 48);
 
-            // Skills Analysis
             let yPos = 60;
-            const skillMap = {
-                "Layers Split": "Proficient in OpenToonz layer management and scene composition.",
-                "Loop Logic": "Demonstrated understanding of animation loops and frame timing.",
-                "Export Success": "Mastered OpenToonz export settings and video rendering.",
-                "Arrow Logic": "Implemented coordinate-based sprite movement (X/Y axis logic).",
-                "Mouse Follow": "Created interactive event loops and mouse-tracking logic.",
-                "Debugging": "Demonstrated logical thinking by identifying/fixing code bugs.",
-                "Resistor Safety": "Safely constructed LED circuits with proper resistor placement.",
-                "Upload Mode": "Successfully compiled and uploaded code to Arduino hardware.",
-                "Servo Test": "Programmed servo motors for precise angular control."
-            };
-
-            const sessions = {
-                's1': 'Session 1: Animation (OpenToonz)',
-                's2': 'Session 2: Programming (Scratch/TurboWarp)',
-                's3': 'Session 3: Robotics (Arduino)'
-            };
-
-            const sessionMap = {
-                's1': ['Layers Split', 'Loop Logic', 'Export Success'],
-                's2': ['Arrow Logic', 'Mouse Follow', 'Debugging'],
-                's3': ['Resistor Safety', 'Upload Mode', 'Servo Test']
-            };
-
             doc.setFont("helvetica", "bold");
             doc.text("Skills Acquired & Verified:", 15, 55);
             yPos += 5;
 
             // Iterate and checking DB
             const p = db.progress[student.id];
-
             let hasSkills = false;
 
             if (p) {
                 Object.keys(sessions).forEach(sessKey => {
                     if (p[sessKey]) {
-                        // Check if any activity in this session is done
                         const doneActs = sessionMap[sessKey].filter(act => p[sessKey][act] && p[sessKey][act].status === 'Done');
 
                         if (doneActs.length > 0) {
@@ -771,17 +875,13 @@
                             doc.setFontSize(11);
                             doc.text(sessions[sessKey], 15, yPos);
                             yPos += 2;
-
                             doc.setFont("helvetica", "normal");
                             doc.setFontSize(10);
 
                             doneActs.forEach(act => {
                                 yPos += 6;
                                 const stars = p[sessKey][act].stars;
-                                const starStr = stars > 0 ? "⭐".repeat(stars) : "";
                                 const desc = skillMap[act] || act;
-                                // Clean unicode for PDF (basic jsPDF struggles with emoji, stripped for safety usually, but we try)
-                                // If emoji fails, we just use text.
                                 doc.text(`• ${desc} (Rating: ${stars}/3)`, 20, yPos);
                             });
                             hasSkills = true;
@@ -799,9 +899,40 @@
             yPos += 30;
             doc.line(15, yPos, 80, yPos);
             doc.text("Trainer Signature", 15, yPos + 5);
+        }
 
-            // Save
+        function generatePDF() {
+            const sel = document.getElementById('report-student-select');
+            const sId = sel.value;
+            if (!sId) { alert("Please select a student first."); return; }
+
+            const student = db.students.find(s => s.id == sId);
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            addStudentPageToPDF(doc, student);
             doc.save(`Report_${student.adm}.pdf`);
+        }
+
+        function generateBatchPDF() {
+            if (!confirm(`Generate reports for ALL students in ${db.currentSchool}? This might take a moment.`)) return;
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const students = getCurrentSchoolStudents();
+
+            if (students.length === 0) {
+                alert("No students found.");
+                return;
+            }
+
+            students.forEach((s, index) => {
+                if (index > 0) doc.addPage();
+                addStudentPageToPDF(doc, s);
+            });
+
+            const date = new Date().toISOString().slice(0, 10);
+            doc.save(`Full_Batch_Report_${db.currentSchool}_${date}.pdf`);
         }
 
         // Start
