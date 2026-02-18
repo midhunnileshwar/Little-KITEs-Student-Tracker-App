@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Little KITEs Tracker</title>
+    <!-- PDF Generation Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    
+    <style>
+        :root {
+            --primary: #4CAF50;
+            --danger: #f44336;
+            --warning: #ff9800;
+            --dark: #333;
+            --light: #f4f4f4;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #eef2f5;
+            color: var(--dark);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Layout */
+        .app-container {
+            display: flex;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        /* Header/Nav for Mobile */
+        .navbar {
+            background-color: var(--dark);
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 100;
+        }
+
+        .navbar h1 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .nav-btn {
+            background: none;
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .nav-btn.active {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            font-weight: bold;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+        }
+
+        /* Views */
+        .view {
+            display: none;
+        }
+        .view.active {
+            display: block;
+        }
+
+        /* Cards & Lists */
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .student-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            background: white;
+            cursor: pointer;
+        }
+        .student-item:last-child { border-bottom: none; }
+        .student-item:hover { background-color: #f9f9f9; }
+
+        .search-bar {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 1rem;
+            box-sizing: border-box; 
+        }
+
+        /* Tracker UI */
+        .session-tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 15px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background: #ddd;
+            border-radius: 8px;
+            font-weight: bold;
+            color: #666;
+            white-space: nowrap;
+        }
+        
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Activity Controls */
+        .activity-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .activity-info {
+            flex: 2;
+            padding-right: 10px;
+        }
+        
+        .activity-info h4 { margin: 0 0 5px 0; font-size: 1.1rem; }
+        .activity-info p { margin: 0; font-size: 0.85rem; color: #666; }
+
+        .activity-action {
+            flex: 1;
+            text-align: right;
+            min-width: 120px;
+        }
+
+        /* Big Buttons */
+        .btn-large {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ccc;
+            background: white;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #555;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-large.done {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-large.hazard {
+            border-color: var(--danger);
+            color: var(--danger);
+            background: #fff0f0;
+        }
+        
+        .btn-large.hazard.safe {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        /* Star Rating */
+        .star-container {
+            display: flex;
+            gap: 5px;
+            justify-content: flex-end;
+        }
+        .star-btn {
+            font-size: 1.5rem;
+            background: none;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            padding: 5px 10px;
+            color: #ccc;
+        }
+        .star-btn.active {
+            background: #fff8e1;
+            color: var(--warning);
+            border-color: var(--warning);
+        }
+
+        /* Utility */
+        .hidden { display: none !important; }
+        .text-center { text-align: center; }
+        .mt-2 { margin-top: 10px; }
+
+        /* Tablet/Desktop Tweaks */
+        @media (min-width: 768px) {
+            .app-container {
+                max-width: 800px;
+                margin: 0 auto;
+                border-left: 1px solid #ddd;
+                border-right: 1px solid #ddd;
+            }
+            .navbar { border-radius: 0 0 10px 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <!-- Navbar -->
+    <div class="navbar">
+        <h1>🪁 Little KITEs Tracker</h1>
+        <div class="nav-links">
+            <button class="nav-btn active" onclick="showView('students')">Students</button>
+            <button class="nav-btn" onclick="showView('reports')">Reports</button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        
+        <!-- View: Student List -->
+        <div id="view-students" class="view active">
+            <input type="text" id="student-search" class="search-bar" placeholder="Search by Name or ID..." onkeyup="renderStudentList()">
+            <div id="student-list-container">
+                <!-- Students rendered here -->
+            </div>
+            <div class="text-center mt-2">
+                <button class="btn-large" style="background:#333;color:white;" onclick="resetDatabase()">⚠️ Reset Data</button>
+            </div>
+        </div>
+
+        <!-- View: Tracker (Student Card) -->
+        <div id="view-tracker" class="view">
+            <div class="card" style="background:#e3f2fd; border-left: 5px solid #2196f3;">
+                <h2 id="tracker-student-name" style="margin:0;">Student Name</h2>
+                <p id="tracker-student-id" style="margin:5px 0 0 0; color:#555;">ID: 12345</p>
+                <button onclick="showView('students')" style="margin-top:10px; padding:5px 10px;">&larr; Back to List</button>
+            </div>
+
+            <div class="session-tabs">
+                <button class="tab-btn active" onclick="switchSession('s1')">Animation</button>
+                <button class="tab-btn" onclick="switchSession('s2')">Coding</button>
+                <button class="tab-btn" onclick="switchSession('s3')">Robotics</button>
+            </div>
+
+            <!-- Session 1: Animation -->
+            <div id="session-s1" class="session-content">
+                <!-- 1.3 Layers -->
+                <div class="activity-row">
+                    <div class="activity-info">
+                        <h4>Act 1.3: Layers</h4>
+                        <p>Check OpenToonz Columns. Sky & Clouds separate?</p>
+                    </div>
+                    <div class="activity-action">
+                        <button id="btn-1-3" class="btn-large" onclick="toggleActivity('s1', 'Layers Split')">Layers Split?</button>
+                    </div>
+                </div>
+                <!-- 1.2 Loop Logic -->
+                <div class="activity-row">
+                    <div class="activity-info">
+                        <h4>Act 1.2: Loop Logic</h4>
+                        <p>Smooth movement? No flickering?</p>
+                    </div>
+                    <div class="activity-action">
+                        <div class="star-container" id="stars-1-2">
+                            <!-- Rendered via JS -->
+                        </div>
+                    </div>
+                </div>
+                <!-- 1.1 Export -->
+                <div class="activity-row">
+                    <div class="activity-info">
+                        <h4>Act 1.1: Export</h4>
+                        <p>MP4/AVI file visible on Desktop?</p>
+                    </div>
+                    <div class="activity-action">
+                        <button id="btn-1-1" class="btn-large" onclick="toggleActivity('s1', 'Export Success')">Exported?</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Session 2: Programming -->
+            <div id="session-s2" class="session-content hidden">
+                <div class="activity-row">
+                    <div class="activity-info">
+                        <h4>Act 2.1: Arrow Keys</h4>
+                        <p>X/Y Logic Correct? (Up/Down/Left/Right)</p>
+                    </div>
+                    <div class="activity-action">
+                         <button id="btn-2-1" class="btn-large" onclick="toggleActivity('s2', 'Arrow Logic')">Logic OK?</button>
+                    </div>
+                </div>
+                <div class="activity-row">
+                    <div class="activity-info">
+                        <h4>Act 2.2: Mouse Follow</h4>
+                        <p>Sprite follows cursor smoothly?</p>
+                    </div>
+                    <div class="activity-action">
+                         <button id="btn-2-2" class="btn-large" onclick="toggleActivity('s2', 'Mouse Follow')">Follows?</button>
+                    </div>
+                </div>
+                <div class="activity-row">
+                    <div class="activity-info">
+                        <h4>Bonus: Debugging</h4>
+                        <p>Fixed off-screen bug independently?</p>
+                    </div>
+                    <div class="activity-action">
+                         <button id="btn-2-3" class="btn-large" onclick="toggleActivity('s2', 'Debugging')">Fixed Bug?</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Session 3: Robotics -->
+            <div id="session-s3" class="session-content hidden">
+                <div class="activity-row" style="background:#fff3e0; padding:10px; border-radius:5px;">
+                    <div class="activity-info">
+                        <h4 style="color:#d32f2f;">⚠️ SAFETY CHECK</h4>
+                        <p>Resistor present? Long leg to Pin?</p>
+                    </div>
+                    <div class="activity-action">
+                         <button id="btn-3-1" class="btn-large hazard" onclick="toggleSafety('s3', 'Resistor Safety')">⚠️ HAZARD CHECK</button>
+                    </div>
+                </div>
+                <div class="activity-row">
+                    <div class="activity-info">
+                        <h4>Act 3.2: Upload Mode</h4>
+                        <p>Not in 'Stage Mode'?</p>
+                    </div>
+                    <div class="activity-action">
+                         <button id="btn-3-2" class="btn-large" onclick="toggleActivity('s3', 'Upload Mode')">Mode OK?</button>
+                    </div>
+                </div>
+                <div class="activity-row">
+                    <div class="activity-info">
+                        <h4>Act 3.3: Servo</h4>
+                        <p>180° sweep accurate?</p>
+                    </div>
+                    <div class="activity-action">
+                         <button id="btn-3-3" class="btn-large" onclick="toggleActivity('s3', 'Servo Test')">Servo OK?</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- View: Reports -->
+        <div id="view-reports" class="view">
+            <h2>Generate Reports</h2>
+            <div class="card">
+                <p>Select a student to generate their performance report.</p>
+                <select id="report-student-select" class="search-bar" style="margin-bottom:20px;">
+                    <!-- Populated via JS -->
+                </select>
+                <button class="btn-large done" onclick="generatePDF()">📄 Download PDF Report</button>
+            </div>
+            <div class="card">
+                 <h3>Data Management</h3>
+                 <button class="btn-large" onclick="downloadBackup()">💾 Backup Data (JSON)</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // --- Data Initialization ---
+    const DEFAULT_STUDENTS = [
+        {id: 1, name: "ABDUL WAJID PALAKKI", adm: "38266"},
+        {id: 2, name: "ABHINAV K T", adm: "38272"},
+        {id: 3, name: "ADHISH A", adm: "36274"},
+        {id: 4, name: "ADIL", adm: "39017"},
+        {id: 5, name: "AGNEY VINOD K", adm: "36287"},
+        {id: 6, name: "AHAMMED RIFAI .M", adm: "36718"},
+        {id: 7, name: "AMEYA K", adm: "36399"},
+        {id: 8, name: "AMEYA SHAJI", adm: "38632"},
+        {id: 9, name: "AMEYA VINOD", adm: "37045"},
+        {id: 10, name: "AMINATH SHAHANA.B", adm: "36383"},
+        {id: 11, name: "ANANTH KRISHNAN K", adm: "36228"},
+        {id: 12, name: "ANVITHA P", adm: "38460"},
+        {id: 13, name: "ASWAJITH P P", adm: "37139"},
+        {id: 14, name: "AYANA SHAIVI", adm: "37035"},
+        {id: 15, name: "AYISHATH FAZMIYA C K", adm: "36423"},
+        {id: 16, name: "AYSHA SIDDIQUE.C", adm: "36220"},
+        {id: 17, name: "DEVANANDHA T", adm: "38540"},
+        {id: 18, name: "DIYA T", adm: "38466"},
+        {id: 19, name: "FATHIMATH SHAMNA T K", adm: "36562"},
+        {id: 20, name: "GAUTHAM S BABU", adm: "36237"},
+        {id: 21, name: "HIRANMAYI K", adm: "36480"},
+        {id: 22, name: "JISHNU. M", adm: "36290"},
+        {id: 23, name: "KARTHIK K P", adm: "39133"},
+        {id: 24, name: "KHADEEJATHUL KUBRA. P", adm: "38459"},
+        {id: 25, name: "KRISHNENDU S", adm: "38457"},
+        {id: 26, name: "MEHRAN MANSOOR", adm: "37942"},
+        {id: 27, name: "MOHAMMED AJAS FADI", adm: "36536"},
+        {id: 28, name: "MUHAMMED AMEEN M", adm: "38146"},
+        {id: 29, name: "MUHAMMED ANFAS .K", adm: "36446"},
+        {id: 30, name: "MUHAMMED SINAN K", adm: "36557"},
+        {id: 31, name: "NANDHAKISHORE K P", adm: "36261"},
+        {id: 32, name: "NIHAL SUBRAMANIAN", adm: "36602"},
+        {id: 33, name: "OMHARI P V", adm: "39183"},
+        {id: 34, name: "RIFA. K.K", adm: "36379"},
+        {id: 35, name: "ROHAN T P", adm: "38362"},
+        {id: 36, name: "SAHALA.K", adm: "38568"},
+        {id: 37, name: "SHAHRUL SHAN", adm: "36414"},
+        {id: 38, name: "SHIVAJITH .H.G", adm: "36222"},
+        {id: 39, name: "SIDHARTH.K", adm: "38377"},
+        {id: 40, name: "SOUPARNIKA K", adm: "36589"},
+        {id: 41, name: "SREE NANDA.M", adm: "36253"},
+        {id: 42, name: "THANUSHA.K", adm: "36271"},
+        {id: 43, name: "VAIGA S", adm: "38427"}
+    ];
+
+    let db = {
+        students: [],
+        progress: {} // format: { studentId: { session: { activity: { status: 'Done', stars: 3 } } } }
+    };
+
+    // --- Core Logic ---
+    function init() {
+        const stored = localStorage.getItem('little_kites_db');
+        if (stored) {
+            db = JSON.parse(stored);
+        } else {
+            db.students = DEFAULT_STUDENTS;
+            save();
+        }
+        renderStudentList();
+        renderReportSelect();
+    }
+
+    function save() {
+        localStorage.setItem('little_kites_db', JSON.stringify(db));
+    }
+
+    function resetDatabase() {
+        if(confirm("Are you sure? This will erase all progress.")) {
+            localStorage.removeItem('little_kites_db');
+            location.reload();
+        }
+    }
+
+    // --- UI Navigation ---
+    function showView(viewId) {
+        document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+        
+        document.getElementById('view-' + viewId).classList.add('active');
+        
+        // Highlight Nav
+        if(viewId === 'students') document.querySelector('.nav-btn:first-child').classList.add('active');
+        if(viewId === 'reports') document.querySelector('.nav-btn:last-child').classList.add('active');
+    }
+
+    function switchSession(sessionId) {
+        document.querySelectorAll('.session-content').forEach(el => el.classList.add('hidden'));
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+        
+        document.getElementById('session-' + sessionId).classList.remove('hidden');
+        // Find button with onclick matching
+        const btns = document.querySelectorAll('.tab-btn');
+        if(sessionId === 's1') btns[0].classList.add('active');
+        if(sessionId === 's2') btns[1].classList.add('active');
+        if(sessionId === 's3') btns[2].classList.add('active');
+    }
+
+    // --- Student List ---
+    let currentStudent = null;
+
+    function renderStudentList() {
+        const container = document.getElementById('student-list-container');
+        const search = document.getElementById('student-search').value.toLowerCase();
+        container.innerHTML = '';
+
+        db.students.forEach(s => {
+            if (s.name.toLowerCase().includes(search) || s.adm.toString().includes(search)) {
+                const div = document.createElement('div');
+                div.className = 'student-item';
+                // Check progress
+                const p = db.progress[s.id] || {};
+                const activeCount = Object.values(p).reduce((acc, sess) => acc + Object.keys(sess).length, 0);
+                
+                div.innerHTML = `
+                    <div>
+                        <strong>${s.name}</strong><br>
+                        <small style="color:#777">ADM: ${s.adm}</small>
+                    </div>
+                    <div style="text-align:right">
+                        <span style="background:${activeCount > 0 ? '#e8f5e9' : '#eee'}; color:${activeCount > 0 ? '#2e7d32' : '#999'}; padding:3px 8px; border-radius:10px; font-size:0.8rem;">
+                            ${activeCount > 0 ? 'In Progress' : 'Not Started'}
+                        </span>
+                    </div>
+                `;
+                div.onclick = () => openStudentTracker(s);
+                container.appendChild(div);
+            }
+        });
+    }
+
+    // --- Tracker ---
+    function openStudentTracker(student) {
+        currentStudent = student;
+        document.getElementById('tracker-student-name').innerText = student.name;
+        document.getElementById('tracker-student-id').innerText = `ADM: ${student.adm} | School: Rajahs H.S.S Nileshwar`;
+        
+        showView('tracker');
+        refreshTrackerUI();
+    }
+
+    function refreshTrackerUI() {
+        if(!currentStudent) return;
+        
+        const sessions = ['s1', 's2', 's3']; // mapped to UI IDs
+        // Mappings for activity names to buttons
+        updateButtonState('s1', 'Layers Split', 'btn-1-3', 'Layers Split?');
+        updateButtonState('s1', 'Export Success', 'btn-1-1', 'Exported?');
+        
+        renderStars('s1', 'Loop Logic', 'stars-1-2');
+
+        updateButtonState('s2', 'Arrow Logic', 'btn-2-1', 'Logic OK?');
+        updateButtonState('s2', 'Mouse Follow', 'btn-2-2', 'Follows?');
+        updateButtonState('s2', 'Debugging', 'btn-2-3', 'Fixed Bug?');
+
+        updateSafetyButton('s3', 'Resistor Safety', 'btn-3-1');
+        updateButtonState('s3', 'Upload Mode', 'btn-3-2', 'Mode OK?');
+        updateButtonState('s3', 'Servo Test', 'btn-3-3', 'Servo OK?');
+    }
+
+    function getProgress(session, activity) {
+        if(!db.progress[currentStudent.id]) return null;
+        if(!db.progress[currentStudent.id][session]) return null;
+        return db.progress[currentStudent.id][session][activity];
+    }
+
+    function setProgress(session, activity, status, stars=0) {
+        if(!db.progress[currentStudent.id]) db.progress[currentStudent.id] = {};
+        if(!db.progress[currentStudent.id][session]) db.progress[currentStudent.id][session] = {};
+        
+        db.progress[currentStudent.id][session][activity] = { status, stars };
+        save();
+        refreshTrackerUI();
+    }
+
+    function toggleActivity(session, activity) {
+        const current = getProgress(session, activity);
+        if (current && current.status === 'Done') {
+            setProgress(session, activity, 'Not Done', 0);
+        } else {
+            setProgress(session, activity, 'Done', 3);
+        }
+    }
+
+    function updateButtonState(session, activity, btnId, defaultText) {
+        const btn = document.getElementById(btnId);
+        const data = getProgress(session, activity);
+        
+        if (data && data.status === 'Done') {
+            btn.classList.add('done');
+            btn.innerText = "✓ " + defaultText;
+        } else {
+            btn.classList.remove('done');
+            btn.innerText = defaultText;
+        }
+    }
+
+    // Safety Button Specifics
+    function toggleSafety(session, activity) {
+        const current = getProgress(session, activity);
+        if (current && current.status === 'Done') {
+            setProgress(session, activity, 'Not Done', 0);
+        } else {
+            setProgress(session, activity, 'Done', 3);
+        }
+    }
+
+    function updateSafetyButton(session, activity, btnId) {
+        const btn = document.getElementById(btnId);
+        const data = getProgress(session, activity);
+        
+        if (data && data.status === 'Done') {
+            btn.classList.add('safe');
+            btn.innerText = "✅ SAFE & VERIFIED";
+        } else {
+            btn.classList.remove('safe');
+            btn.innerText = "⚠️ HAZARD CHECK";
+        }
+    }
+
+    // Star Logic based
+    function renderStars(session, activity, containerId) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = '';
+        const data = getProgress(session, activity);
+        const currentStars = data ? data.stars : 0;
+
+        for(let i=1; i<=3; i++) {
+            const btn = document.createElement('button');
+            btn.className = `star-btn ${i <= currentStars ? 'active' : ''}`;
+            btn.innerText = '★';
+            btn.onclick = () => setProgress(session, activity, 'Done', i);
+            container.appendChild(btn);
+        }
+    }
+
+    // --- Reports ---
+    function renderReportSelect() {
+        const sel = document.getElementById('report-student-select');
+        sel.innerHTML = '<option value="">-- Select Student --</option>';
+        db.students.forEach(s => {
+            const opt = document.createElement('option');
+            opt.value = s.id;
+            opt.textContent = `${s.adm} - ${s.name}`;
+            sel.appendChild(opt);
+        });
+    }
+
+    function downloadBackup() {
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db));
+        const downloadAnchorNode = document.createElement('a');
+        downloadAnchorNode.setAttribute("href", dataStr);
+        downloadAnchorNode.setAttribute("download", "little_kites_backup.json");
+        document.body.appendChild(downloadAnchorNode);
+        downloadAnchorNode.click();
+        downloadAnchorNode.remove();
+    }
+
+    function generatePDF() {
+        const sel = document.getElementById('report-student-select');
+        const sId = sel.value;
+        if(!sId) { alert("Please select a student first."); return; }
+        
+        const student = db.students.find(s => s.id == sId);
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        // Header
+        doc.setFontSize(18);
+        doc.setFont("helvetica", "bold");
+        doc.text("Little KITEs Special Training - Performance Report", 105, 15, null, null, "center");
+        
+        doc.setFontSize(12);
+        doc.setFont("helvetica", "normal");
+        doc.text(`Name: ${student.name}`, 15, 30);
+        doc.text(`Admission No: ${student.adm}`, 15, 37);
+        doc.text(`School Unit: Rajahs H.S.S Nileshwar`, 15, 44);
+        doc.line(15, 48, 195, 48);
+
+        // Skills Analysis
+        let yPos = 60;
+        const skillMap = {
+            "Layers Split": "Proficient in OpenToonz layer management and scene composition.",
+            "Loop Logic": "Demonstrated understanding of animation loops and frame timing.",
+            "Export Success": "Mastered OpenToonz export settings and video rendering.",
+            "Arrow Logic": "Implemented coordinate-based sprite movement (X/Y axis logic).",
+            "Mouse Follow": "Created interactive event loops and mouse-tracking logic.",
+            "Debugging": "Demonstrated logical thinking by identifying/fixing code bugs.",
+            "Resistor Safety": "Safely constructed LED circuits with proper resistor placement.",
+            "Upload Mode": "Successfully compiled and uploaded code to Arduino hardware.",
+            "Servo Test": "Programmed servo motors for precise angular control."
+        };
+
+        const sessions = {
+            's1': 'Session 1: Animation (OpenToonz)',
+            's2': 'Session 2: Programming (Scratch/TurboWarp)',
+            's3': 'Session 3: Robotics (Arduino)'
+        };
+
+        const sessionMap = {
+            's1': ['Layers Split', 'Loop Logic', 'Export Success'],
+            's2': ['Arrow Logic', 'Mouse Follow', 'Debugging'],
+            's3': ['Resistor Safety', 'Upload Mode', 'Servo Test']
+        };
+
+        doc.setFont("helvetica", "bold");
+        doc.text("Skills Acquired & Verified:", 15, 55);
+        yPos += 5;
+
+        // Iterate and checking DB
+        const p = db.progress[student.id];
+
+        let hasSkills = false;
+
+        if (p) {
+            Object.keys(sessions).forEach(sessKey => {
+                if (p[sessKey]) {
+                    // Check if any activity in this session is done
+                    const doneActs = sessionMap[sessKey].filter(act => p[sessKey][act] && p[sessKey][act].status === 'Done');
+                    
+                    if (doneActs.length > 0) {
+                        yPos += 7;
+                        doc.setFont("helvetica", "bold");
+                        doc.setFontSize(11);
+                        doc.text(sessions[sessKey], 15, yPos);
+                        yPos += 2;
+                        
+                        doc.setFont("helvetica", "normal");
+                        doc.setFontSize(10);
+                        
+                        doneActs.forEach(act => {
+                            yPos += 6;
+                            const stars = p[sessKey][act].stars;
+                            const starStr = stars > 0 ? "⭐".repeat(stars) : "";
+                            const desc = skillMap[act] || act;
+                            // Clean unicode for PDF (basic jsPDF struggles with emoji, stripped for safety usually, but we try)
+                            // If emoji fails, we just use text.
+                            doc.text(`• ${desc} (Rating: ${stars}/3)`, 20, yPos);
+                        });
+                        hasSkills = true;
+                    }
+                }
+            });
+        }
+
+        if(!hasSkills) {
+            yPos += 10;
+            doc.text("No completed activities recorded yet.", 20, yPos);
+        }
+
+        // Footer
+        yPos += 30;
+        doc.line(15, yPos, 80, yPos);
+        doc.text("Trainer Signature", 15, yPos + 5);
+
+        // Save
+        doc.save(`Report_${student.adm}.pdf`);
+    }
+
+    // Start
+    init();
+
+</script>
+
+</body>
+</html>
