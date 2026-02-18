@@ -500,341 +500,341 @@
     </div>
 
     <script>
-    // --- Data Initialization ---
-    const DEFAULT_SCHOOL = "Rajahs H.S.S Nileshwar";
-    const DEFAULT_STUDENTS = [
-        {id: 1, name: "ABDUL WAJID PALAKKI", adm: "38266"},
-        {id: 2, name: "ABHINAV K T", adm: "38272"},
-        {id: 3, name: "ADHISH A", adm: "36274"},
-        {id: 4, name: "ADIL", adm: "39017"},
-        {id: 5, name: "AGNEY VINOD K", adm: "36287"},
-        {id: 6, name: "AHAMMED RIFAI .M", adm: "36718"},
-        {id: 7, name: "AMEYA K", adm: "36399"},
-        {id: 8, name: "AMEYA SHAJI", adm: "38632"},
-        {id: 9, name: "AMEYA VINOD", adm: "37045"},
-        {id: 10, name: "AMINATH SHAHANA.B", adm: "36383"},
-        {id: 11, name: "ANANTH KRISHNAN K", adm: "36228"},
-        {id: 12, name: "ANVITHA P", adm: "38460"},
-        {id: 13, name: "ASWAJITH P P", adm: "37139"},
-        {id: 14, name: "AYANA SHAIVI", adm: "37035"},
-        {id: 15, name: "AYISHATH FAZMIYA C K", adm: "36423"},
-        {id: 16, name: "AYSHA SIDDIQUE.C", adm: "36220"},
-        {id: 17, name: "DEVANANDHA T", adm: "38540"},
-        {id: 18, name: "DIYA T", adm: "38466"},
-        {id: 19, name: "FATHIMATH SHAMNA T K", adm: "36562"},
-        {id: 20, name: "GAUTHAM S BABU", adm: "36237"},
-        {id: 21, name: "HIRANMAYI K", adm: "36480"},
-        {id: 22, name: "JISHNU. M", adm: "36290"},
-        {id: 23, name: "KARTHIK K P", adm: "39133"},
-        {id: 24, name: "KHADEEJATHUL KUBRA. P", adm: "38459"},
-        {id: 25, name: "KRISHNENDU S", adm: "38457"},
-        {id: 26, name: "MEHRAN MANSOOR", adm: "37942"},
-        {id: 27, name: "MOHAMMED AJAS FADI", adm: "36536"},
-        {id: 28, name: "MUHAMMED AMEEN M", adm: "38146"},
-        {id: 29, name: "MUHAMMED ANFAS .K", adm: "36446"},
-        {id: 30, name: "MUHAMMED SINAN K", adm: "36557"},
-        {id: 31, name: "NANDHAKISHORE K P", adm: "36261"},
-        {id: 32, name: "NIHAL SUBRAMANIAN", adm: "36602"},
-        {id: 33, name: "OMHARI P V", adm: "39183"},
-        {id: 34, name: "RIFA. K.K", adm: "36379"},
-        {id: 35, name: "ROHAN T P", adm: "38362"},
-        {id: 36, name: "SAHALA.K", adm: "38568"},
-        {id: 37, name: "SHAHRUL SHAN", adm: "36414"},
-        {id: 38, name: "SHIVAJITH .H.G", adm: "36222"},
-        {id: 39, name: "SIDHARTH.K", adm: "38377"},
-        {id: 40, name: "SOUPARNIKA K", adm: "36589"},
-        {id: 41, name: "SREE NANDA.M", adm: "36253"},
-        {id: 42, name: "THANUSHA.K", adm: "36271"},
-        {id: 43, name: "VAIGA S", adm: "38427"}
-    ];
+        // --- Data Initialization ---
+        const DEFAULT_SCHOOL = "Rajahs H.S.S Nileshwar";
+        const DEFAULT_STUDENTS = [
+            { id: 1, name: "AADIDEV A", adm: "41453" },
+            { id: 2, name: "AMISHA C MANOJ", adm: "42804" },
+            { id: 3, name: "ANAMIKA S GIRISH", adm: "42361" },
+            { id: 4, name: "ANANYA MANOJ", adm: "41277" },
+            { id: 5, name: "ANIRUDH V V", adm: "41280" },
+            { id: 6, name: "ANURUDH T", adm: "41461" },
+            { id: 7, name: "ANUSHKA P", adm: "42170" },
+            { id: 8, name: "AVANTHIKA.K.V", adm: "42829" },
+            { id: 9, name: "DEVINA .S", adm: "42317" },
+            { id: 10, name: "DHRUVAN T K", adm: "41475" },
+            { id: 11, name: "DIYA MITHUN", adm: "41323" },
+            { id: 12, name: "FATHIMATH SHAHANA P", adm: "42543" },
+            { id: 13, name: "HARIDEV M", adm: "41283" },
+            { id: 14, name: "HARSHITH SATHEESH.P.V", adm: "42471" },
+            { id: 15, name: "JOEL NOBLE", adm: "41904" },
+            { id: 16, name: "KARTHIK HARISH", adm: "41918" },
+            { id: 17, name: "LUBNA M", adm: "42256" },
+            { id: 18, name: "MEDHA P S", adm: "41430" },
+            { id: 19, name: "MIDHILA J NAIR", adm: "41354" },
+            { id: 20, name: "MUHAMMAD FARZAN", adm: "42431" },
+            { id: 21, name: "MUHAMMAD NAFIH M V", adm: "41479" },
+            { id: 22, name: "MUHAMMED AJMAL M P", adm: "41565" },
+            { id: 23, name: "MUHAMMED NIHAL K P", adm: "42308" },
+            { id: 24, name: "MUHAMMED SINAN A M", adm: "42808" },
+            { id: 25, name: "NAVEEN KRISHNA K", adm: "42444" },
+            { id: 26, name: "NIVED . M", adm: "42272" },
+            { id: 27, name: "NIVEDITH SUDEV V", adm: "41352" },
+            { id: 28, name: "NIVEDYA MOHANAN", adm: "41325" },
+            { id: 29, name: "PRABHAV PRAMOD", adm: "42538" },
+            { id: 30, name: "PRIYANANDAN C", adm: "41405" },
+            { id: 31, name: "RAUNAK RAJ A", adm: "41275" },
+            { id: 32, name: "RHITHUNANDH R NAIR", adm: "41502" },
+            { id: 33, name: "SHIVA NANDA T V", adm: "41424" },
+            { id: 34, name: "SHIVADATH.K.V", adm: "42418" },
+            { id: 35, name: "SIVEYA SATHYAN", adm: "41299" },
+            { id: 36, name: "SREEDHEV DINESH", adm: "41950" },
+            { id: 37, name: "SREEHARI K", adm: "42266" },
+            { id: 38, name: "SREYA K", adm: "41305" },
+            { id: 39, name: "VAIBHAV SATHISH", adm: "41507" },
+            { id: 40, name: "VAIGA P", adm: "41342" },
+            { id: 41, name: "VAISHNAVI KAMMATH N", adm: "41480" },
+            { id: 42, name: "VAISHNAVI VALSAN", adm: "42260" },
+            { id: 43, name: "VANI P", adm: "41576" }
+        ];
 
-    let db = {
-        schools: [DEFAULT_SCHOOL],
-        currentSchool: DEFAULT_SCHOOL,
-        students: [],
-        progress: {} 
-    };
+        let db = {
+            schools: [DEFAULT_SCHOOL],
+            currentSchool: DEFAULT_SCHOOL,
+            students: [],
+            progress: {}
+        };
 
-    let syncConfig = {
-        token: null,
-        gistId: null
-    };
+        let syncConfig = {
+            token: null,
+            gistId: null
+        };
 
-    let currentStudent = null;
+        let currentStudent = null;
 
-    // --- Core Logic ---
-    function init() {
-        const stored = localStorage.getItem('little_kites_db');
-        if (stored) {
-            db = JSON.parse(stored);
-            if(!db.schools) {
-                db.schools = [DEFAULT_SCHOOL];
-                db.currentSchool = DEFAULT_SCHOOL;
-                db.students.forEach(s => s.school = DEFAULT_SCHOOL);
+        // --- Core Logic ---
+        function init() {
+            const stored = localStorage.getItem('little_kites_db');
+            if (stored) {
+                db = JSON.parse(stored);
+                if (!db.schools) {
+                    db.schools = [DEFAULT_SCHOOL];
+                    db.currentSchool = DEFAULT_SCHOOL;
+                    db.students.forEach(s => s.school = DEFAULT_SCHOOL);
+                    save();
+                }
+            } else {
+                db.students = DEFAULT_STUDENTS.map(s => ({ ...s, school: DEFAULT_SCHOOL }));
                 save();
             }
-        } else {
-            db.students = DEFAULT_STUDENTS.map(s => ({ ...s, school: DEFAULT_SCHOOL }));
-            save();
-        }
 
-        const storedSync = localStorage.getItem('little_kites_sync');
-        if(storedSync) {
-            syncConfig = JSON.parse(storedSync);
-            updateSyncUI(true);
-        }
-        
-        renderSchoolDropdown();
-        showView('school-select');
-        document.getElementById('current-school-display').innerText = db.currentSchool;
-    }
-
-    function save() {
-        localStorage.setItem('little_kites_db', JSON.stringify(db));
-    }
-
-    function secureReset() {
-        if(confirm("DELETE DATA? Type 'DELETE'")) {
-            const code = prompt("Please type 'DELETE' (all caps) to erase all data.");
-            if(code === "DELETE") {
-                localStorage.removeItem('little_kites_db');
-                localStorage.removeItem('little_kites_sync');
-                location.reload();
-            }
-        }
-    }
-
-    // --- GitHub Sync Logic ---
-    async function setupSync() {
-        const token = document.getElementById('github-token').value.trim();
-        if(!token) { alert("Please enter a valid token."); return; }
-
-        syncConfig.token = token;
-        
-        try {
-            await triggerSync(); // Will create Gist if not exists
-            localStorage.setItem('little_kites_sync', JSON.stringify(syncConfig));
-            updateSyncUI(true);
-            alert("Setup Complete! Data synced to GitHub.");
-        } catch(e) {
-            alert("Sync Failed: " + e.message);
-            syncConfig.token = null; // Revert
-        }
-    }
-
-    function disconnectSync() {
-        if(confirm("Disconnect from GitHub? Local data will remain.")) {
-            syncConfig = { token: null, gistId: null };
-            localStorage.removeItem('little_kites_sync');
-            updateSyncUI(false);
-            document.getElementById('github-token').value = '';
-        }
-    }
-
-    function updateSyncUI(connected) {
-        if(connected) {
-            document.getElementById('sync-setup-ui').classList.add('hidden');
-            document.getElementById('sync-status-ui').classList.remove('hidden');
-        } else {
-            document.getElementById('sync-setup-ui').classList.remove('hidden');
-            document.getElementById('sync-status-ui').classList.add('hidden');
-        }
-    }
-
-    async function triggerSync() {
-        const statusEl = document.getElementById('sync-status-text');
-        statusEl.innerText = "Syncing...";
-        
-        try {
-            // 1. Check if Gist exists
-            if (!syncConfig.gistId) {
-                // Create new Gist
-                const gist = await createGist();
-                syncConfig.gistId = gist.id;
-            } else {
-                // 2. Try to Get Gist
-                let remoteData = null;
-                try {
-                    remoteData = await getGist(syncConfig.gistId);
-                } catch (e) {
-                    if (e.message.includes('404')) {
-                        // Gist deleted? Recreate
-                        const gist = await createGist();
-                        syncConfig.gistId = gist.id;
-                    } else throw e;
-                }
-
-                if (remoteData) {
-                   // Merge Logic: Simple overwrite for now (Load Remote)
-                   // A smarter merge would check timestamps, but we'll stick to 'Last Sync' logic
-                   // Actually, let's prioritize LOCAL changes if we are pushing
-                   // But to sync across devices, we need to PULL first.
-                   
-                   // STRATEGY: 
-                   // If we are connecting (first time), PULL remote data if it looks newer/bigger?
-                   // For now: We will Overwrite REMOTE with GLOBAL LOCAL data to ensure save.
-                   // WAIT: If I am on phone, I want to PULL laptop data.
-                   
-                   // Let's UPDATE Local DB with Remote DB
-                   db = remoteData;
-                   save();
-                   
-                   // Re-render UI
-                   renderSchoolDropdown();
-                   renderStudentList();
-                }
+            const storedSync = localStorage.getItem('little_kites_sync');
+            if (storedSync) {
+                syncConfig = JSON.parse(storedSync);
+                updateSyncUI(true);
             }
 
-            // 3. Always PUSH local data back to ensure it's up to date
-            await updateGist(syncConfig.gistId, db);
-            
-            statusEl.innerText = "Synced (Last: " + new Date().toLocaleTimeString() + ")";
-
-        } catch (e) {
-            statusEl.innerText = "Error";
-            console.error(e);
-            throw e;
-        }
-    }
-
-    async function createGist() {
-        const response = await fetch('https://api.github.com/gists', {
-            method: 'POST',
-            headers: {
-                'Authorization': `token ${syncConfig.token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                description: "Little KITEs Student Tracker Data",
-                public: false,
-                files: {
-                    "little_kites_data.json": {
-                        content: JSON.stringify(db)
-                    }
-                }
-            })
-        });
-        if(!response.ok) throw new Error("Failed to create Gist");
-        return await response.json();
-    }
-
-    async function getGist(id) {
-        const response = await fetch(`https://api.github.com/gists/${id}`, {
-            headers: { 'Authorization': `token ${syncConfig.token}` }
-        });
-        if(!response.ok) throw new Error("Failed to get Gist");
-        const json = await response.json();
-        const content = json.files["little_kites_data.json"].content;
-        return JSON.parse(content);
-    }
-
-    async function updateGist(id, data) {
-         const response = await fetch(`https://api.github.com/gists/${id}`, {
-            method: 'PATCH',
-            headers: {
-                'Authorization': `token ${syncConfig.token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                files: {
-                    "little_kites_data.json": {
-                        content: JSON.stringify(data)
-                    }
-                }
-            })
-        });
-        if(!response.ok) throw new Error("Failed to update Gist");
-    }
-
-    // --- School Management ---
-    function renderSchoolDropdown() {
-        const sel = document.getElementById('school-select-dropdown');
-        sel.innerHTML = '';
-        db.schools.forEach(school => {
-            const opt = document.createElement('option');
-            opt.value = school;
-            opt.innerText = school;
-            sel.appendChild(opt);
-        });
-        if(db.currentSchool) sel.value = db.currentSchool;
-    }
-
-    function addNewSchool() {
-        const name = document.getElementById('new-school-name').value.trim();
-        if(!name) return;
-        
-        if(!db.schools.includes(name)) {
-            db.schools.push(name);
-            save();
             renderSchoolDropdown();
-            document.getElementById('school-select-dropdown').value = name;
-            alert(`School '${name}' added!`);
-        } else {
-            alert("School already exists.");
-        }
-        document.getElementById('new-school-name').value = '';
-    }
-
-    function selectSchool() {
-        const sel = document.getElementById('school-select-dropdown');
-        db.currentSchool = sel.value;
-        save();
-        document.getElementById('current-school-display').innerText = db.currentSchool;
-        renderStudentList(); 
-        showView('students');
-    }
-
-    // --- UI Navigation ---
-    function showView(viewId) {
-        document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
-        document.getElementById('view-' + viewId).classList.add('active');
-        
-        const navs = document.querySelectorAll('.nav-btn');
-        if(viewId === 'school-select') navs[0].classList.add('active');
-        if(viewId === 'students') navs[1].classList.add('active');
-        if(viewId === 'reports') {
-            navs[2].classList.add('active');
-            renderReportSelect();
-        }
-    }
-
-    function switchSession(sessionId) {
-        document.querySelectorAll('.session-content').forEach(el => el.classList.add('hidden'));
-        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-        document.getElementById('session-' + sessionId).classList.remove('hidden');
-        const btns = document.querySelectorAll('.tab-btn');
-        if(sessionId === 's1') btns[0].classList.add('active');
-        if(sessionId === 's2') btns[1].classList.add('active');
-        if(sessionId === 's3') btns[2].classList.add('active');
-    }
-
-    // --- Student List ---
-    function getCurrentSchoolStudents() {
-        return db.students.filter(s => s.school === db.currentSchool || (!s.school && db.currentSchool === DEFAULT_SCHOOL));
-    }
-
-    function renderStudentList() {
-        const container = document.getElementById('student-list-container');
-        const search = document.getElementById('student-search').value.toLowerCase();
-        container.innerHTML = '';
-
-        const visibleStudents = getCurrentSchoolStudents();
-        let serialNo = 1;
-
-        if(visibleStudents.length === 0) {
-            container.innerHTML = `<p class="text-center" style="color:#777; padding:20px;">No students found for ${db.currentSchool}.<br><small>(Add Student feature coming soon)</small></p>`;
-            return;
+            showView('school-select');
+            document.getElementById('current-school-display').innerText = db.currentSchool;
         }
 
-        visibleStudents.forEach(s => {
-            if (s.name.toLowerCase().includes(search) || s.adm.toString().includes(search)) {
-                const div = document.createElement('div');
-                div.className = 'student-item';
-                const p = db.progress[s.id] || {};
-                const activeCount = Object.values(p).reduce((acc, sess) => acc + Object.keys(sess).length, 0);
-                
-                div.innerHTML = `
+        function save() {
+            localStorage.setItem('little_kites_db', JSON.stringify(db));
+        }
+
+        function secureReset() {
+            if (confirm("DELETE DATA? Type 'DELETE'")) {
+                const code = prompt("Please type 'DELETE' (all caps) to erase all data.");
+                if (code === "DELETE") {
+                    localStorage.removeItem('little_kites_db');
+                    localStorage.removeItem('little_kites_sync');
+                    location.reload();
+                }
+            }
+        }
+
+        // --- GitHub Sync Logic ---
+        async function setupSync() {
+            const token = document.getElementById('github-token').value.trim();
+            if (!token) { alert("Please enter a valid token."); return; }
+
+            syncConfig.token = token;
+
+            try {
+                await triggerSync(); // Will create Gist if not exists
+                localStorage.setItem('little_kites_sync', JSON.stringify(syncConfig));
+                updateSyncUI(true);
+                alert("Setup Complete! Data synced to GitHub.");
+            } catch (e) {
+                alert("Sync Failed: " + e.message);
+                syncConfig.token = null; // Revert
+            }
+        }
+
+        function disconnectSync() {
+            if (confirm("Disconnect from GitHub? Local data will remain.")) {
+                syncConfig = { token: null, gistId: null };
+                localStorage.removeItem('little_kites_sync');
+                updateSyncUI(false);
+                document.getElementById('github-token').value = '';
+            }
+        }
+
+        function updateSyncUI(connected) {
+            if (connected) {
+                document.getElementById('sync-setup-ui').classList.add('hidden');
+                document.getElementById('sync-status-ui').classList.remove('hidden');
+            } else {
+                document.getElementById('sync-setup-ui').classList.remove('hidden');
+                document.getElementById('sync-status-ui').classList.add('hidden');
+            }
+        }
+
+        async function triggerSync() {
+            const statusEl = document.getElementById('sync-status-text');
+            statusEl.innerText = "Syncing...";
+
+            try {
+                // 1. Check if Gist exists
+                if (!syncConfig.gistId) {
+                    // Create new Gist
+                    const gist = await createGist();
+                    syncConfig.gistId = gist.id;
+                } else {
+                    // 2. Try to Get Gist
+                    let remoteData = null;
+                    try {
+                        remoteData = await getGist(syncConfig.gistId);
+                    } catch (e) {
+                        if (e.message.includes('404')) {
+                            // Gist deleted? Recreate
+                            const gist = await createGist();
+                            syncConfig.gistId = gist.id;
+                        } else throw e;
+                    }
+
+                    if (remoteData) {
+                        // Merge Logic: Simple overwrite for now (Load Remote)
+                        // A smarter merge would check timestamps, but we'll stick to 'Last Sync' logic
+                        // Actually, let's prioritize LOCAL changes if we are pushing
+                        // But to sync across devices, we need to PULL first.
+
+                        // STRATEGY: 
+                        // If we are connecting (first time), PULL remote data if it looks newer/bigger?
+                        // For now: We will Overwrite REMOTE with GLOBAL LOCAL data to ensure save.
+                        // WAIT: If I am on phone, I want to PULL laptop data.
+
+                        // Let's UPDATE Local DB with Remote DB
+                        db = remoteData;
+                        save();
+
+                        // Re-render UI
+                        renderSchoolDropdown();
+                        renderStudentList();
+                    }
+                }
+
+                // 3. Always PUSH local data back to ensure it's up to date
+                await updateGist(syncConfig.gistId, db);
+
+                statusEl.innerText = "Synced (Last: " + new Date().toLocaleTimeString() + ")";
+
+            } catch (e) {
+                statusEl.innerText = "Error";
+                console.error(e);
+                throw e;
+            }
+        }
+
+        async function createGist() {
+            const response = await fetch('https://api.github.com/gists', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `token ${syncConfig.token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    description: "Little KITEs Student Tracker Data",
+                    public: false,
+                    files: {
+                        "little_kites_data.json": {
+                            content: JSON.stringify(db)
+                        }
+                    }
+                })
+            });
+            if (!response.ok) throw new Error("Failed to create Gist");
+            return await response.json();
+        }
+
+        async function getGist(id) {
+            const response = await fetch(`https://api.github.com/gists/${id}`, {
+                headers: { 'Authorization': `token ${syncConfig.token}` }
+            });
+            if (!response.ok) throw new Error("Failed to get Gist");
+            const json = await response.json();
+            const content = json.files["little_kites_data.json"].content;
+            return JSON.parse(content);
+        }
+
+        async function updateGist(id, data) {
+            const response = await fetch(`https://api.github.com/gists/${id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Authorization': `token ${syncConfig.token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    files: {
+                        "little_kites_data.json": {
+                            content: JSON.stringify(data)
+                        }
+                    }
+                })
+            });
+            if (!response.ok) throw new Error("Failed to update Gist");
+        }
+
+        // --- School Management ---
+        function renderSchoolDropdown() {
+            const sel = document.getElementById('school-select-dropdown');
+            sel.innerHTML = '';
+            db.schools.forEach(school => {
+                const opt = document.createElement('option');
+                opt.value = school;
+                opt.innerText = school;
+                sel.appendChild(opt);
+            });
+            if (db.currentSchool) sel.value = db.currentSchool;
+        }
+
+        function addNewSchool() {
+            const name = document.getElementById('new-school-name').value.trim();
+            if (!name) return;
+
+            if (!db.schools.includes(name)) {
+                db.schools.push(name);
+                save();
+                renderSchoolDropdown();
+                document.getElementById('school-select-dropdown').value = name;
+                alert(`School '${name}' added!`);
+            } else {
+                alert("School already exists.");
+            }
+            document.getElementById('new-school-name').value = '';
+        }
+
+        function selectSchool() {
+            const sel = document.getElementById('school-select-dropdown');
+            db.currentSchool = sel.value;
+            save();
+            document.getElementById('current-school-display').innerText = db.currentSchool;
+            renderStudentList();
+            showView('students');
+        }
+
+        // --- UI Navigation ---
+        function showView(viewId) {
+            document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById('view-' + viewId).classList.add('active');
+
+            const navs = document.querySelectorAll('.nav-btn');
+            if (viewId === 'school-select') navs[0].classList.add('active');
+            if (viewId === 'students') navs[1].classList.add('active');
+            if (viewId === 'reports') {
+                navs[2].classList.add('active');
+                renderReportSelect();
+            }
+        }
+
+        function switchSession(sessionId) {
+            document.querySelectorAll('.session-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById('session-' + sessionId).classList.remove('hidden');
+            const btns = document.querySelectorAll('.tab-btn');
+            if (sessionId === 's1') btns[0].classList.add('active');
+            if (sessionId === 's2') btns[1].classList.add('active');
+            if (sessionId === 's3') btns[2].classList.add('active');
+        }
+
+        // --- Student List ---
+        function getCurrentSchoolStudents() {
+            return db.students.filter(s => s.school === db.currentSchool || (!s.school && db.currentSchool === DEFAULT_SCHOOL));
+        }
+
+        function renderStudentList() {
+            const container = document.getElementById('student-list-container');
+            const search = document.getElementById('student-search').value.toLowerCase();
+            container.innerHTML = '';
+
+            const visibleStudents = getCurrentSchoolStudents();
+            let serialNo = 1;
+
+            if (visibleStudents.length === 0) {
+                container.innerHTML = `<p class="text-center" style="color:#777; padding:20px;">No students found for ${db.currentSchool}.<br><small>(Add Student feature coming soon)</small></p>`;
+                return;
+            }
+
+            visibleStudents.forEach(s => {
+                if (s.name.toLowerCase().includes(search) || s.adm.toString().includes(search)) {
+                    const div = document.createElement('div');
+                    div.className = 'student-item';
+                    const p = db.progress[s.id] || {};
+                    const activeCount = Object.values(p).reduce((acc, sess) => acc + Object.keys(sess).length, 0);
+
+                    div.innerHTML = `
                     <div style="flex:1; display:flex; gap:10px; align-items:center;">
                         <span style="font-weight:bold; color:#888; width:25px; text-align:right;">${serialNo}.</span>
                         <div>
@@ -848,249 +848,249 @@
                         </span>
                     </div>
                 `;
-                div.onclick = () => openStudentTracker(s);
-                container.appendChild(div);
-                serialNo++;
-            }
-        });
-    }
-
-    // --- Tracker ---
-    function openStudentTracker(student) {
-        currentStudent = student;
-        document.getElementById('tracker-student-name').innerText = student.name;
-        document.getElementById('tracker-student-id').innerText = `ADM: ${student.adm} | ${db.currentSchool}`;
-        showView('tracker');
-        refreshTrackerUI();
-    }
-
-    function refreshTrackerUI() {
-        if(!currentStudent) return;
-        
-        updateButtonState('s1', 'Layers Split', 'btn-1-3', 'Layers Split?');
-        updateButtonState('s1', 'Export Success', 'btn-1-1', 'Exported?');
-        renderStars('s1', 'Loop Logic', 'stars-1-2');
-
-        updateButtonState('s2', 'Arrow Logic', 'btn-2-1', 'Logic OK?');
-        updateButtonState('s2', 'Mouse Follow', 'btn-2-2', 'Follows?');
-        updateButtonState('s2', 'Debugging', 'btn-2-3', 'Fixed Bug?');
-
-        updateSafetyButton('s3', 'Resistor Safety', 'btn-3-1');
-        updateButtonState('s3', 'Upload Mode', 'btn-3-2', 'Mode OK?');
-        updateButtonState('s3', 'Servo Test', 'btn-3-3', 'Servo OK?');
-    }
-
-    function getProgress(session, activity) {
-        if(!currentStudent) return null;
-        if(!db.progress[currentStudent.id]) return null;
-        if(!db.progress[currentStudent.id][session]) return null;
-        return db.progress[currentStudent.id][session][activity];
-    }
-
-    function setProgress(session, activity, status, stars=0) {
-        if(!db.progress[currentStudent.id]) db.progress[currentStudent.id] = {};
-        if(!db.progress[currentStudent.id][session]) db.progress[currentStudent.id][session] = {};
-        
-        db.progress[currentStudent.id][session][activity] = { status, stars };
-        save();
-        refreshTrackerUI();
-    }
-
-    function toggleActivity(session, activity) {
-        const current = getProgress(session, activity);
-        if (current && current.status === 'Done') {
-            setProgress(session, activity, 'Not Done', 0);
-        } else {
-            setProgress(session, activity, 'Done', 3);
-        }
-    }
-
-    function updateButtonState(session, activity, btnId, defaultText) {
-        const btn = document.getElementById(btnId);
-        const data = getProgress(session, activity);
-        
-        if (data && data.status === 'Done') {
-            btn.classList.add('done');
-            btn.innerText = "✓ " + defaultText;
-        } else {
-            btn.classList.remove('done');
-            btn.innerText = defaultText;
-        }
-    }
-
-    function toggleSafety(session, activity) {
-        const current = getProgress(session, activity);
-        if (current && current.status === 'Done') {
-            setProgress(session, activity, 'Not Done', 0);
-        } else {
-            setProgress(session, activity, 'Done', 3);
-        }
-    }
-
-    function updateSafetyButton(session, activity, btnId) {
-        const btn = document.getElementById(btnId);
-        const data = getProgress(session, activity);
-        
-        if (data && data.status === 'Done') {
-            btn.classList.add('safe');
-            btn.innerText = "✅ SAFE & VERIFIED";
-        } else {
-            btn.classList.remove('safe');
-            btn.innerText = "⚠️ HAZARD CHECK";
-        }
-    }
-
-    function renderStars(session, activity, containerId) {
-        const container = document.getElementById(containerId);
-        container.innerHTML = '';
-        const data = getProgress(session, activity);
-        const currentStars = data ? data.stars : 0;
-
-        for(let i=1; i<=3; i++) {
-            const btn = document.createElement('button');
-            btn.className = `star-btn ${i <= currentStars ? 'active' : ''}`;
-            btn.innerText = '★';
-            btn.onclick = () => setProgress(session, activity, 'Done', i);
-            container.appendChild(btn);
-        }
-    }
-
-    // --- Reports ---
-    function renderReportSelect() {
-        const sel = document.getElementById('report-student-select');
-        sel.innerHTML = '<option value="">-- Select Student --</option>';
-        const visibleStudents = getCurrentSchoolStudents();
-        visibleStudents.forEach(s => {
-            const opt = document.createElement('option');
-            opt.value = s.id;
-            opt.textContent = `${s.adm} - ${s.name}`;
-            sel.appendChild(opt);
-        });
-    }
-
-    function downloadBackup() {
-        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db));
-        const downloadAnchorNode = document.createElement('a');
-        downloadAnchorNode.setAttribute("href", dataStr);
-        downloadAnchorNode.setAttribute("download", "little_kites_backup.json");
-        document.body.appendChild(downloadAnchorNode);
-        downloadAnchorNode.click();
-        downloadAnchorNode.remove();
-    }
-
-    // REPORT LOGIC
-    const skillMap = {
-        "Layers Split": "Proficient in OpenToonz layer management and scene composition.",
-        "Loop Logic": "Demonstrated understanding of animation loops and frame timing.",
-        "Export Success": "Mastered OpenToonz export settings and video rendering.",
-        "Arrow Logic": "Implemented coordinate-based sprite movement (X/Y axis logic).",
-        "Mouse Follow": "Created interactive event loops and mouse-tracking logic.",
-        "Debugging": "Demonstrated logical thinking by identifying/fixing code bugs.",
-        "Resistor Safety": "Safely constructed LED circuits with proper resistor placement.",
-        "Upload Mode": "Successfully compiled and uploaded code to Arduino hardware.",
-        "Servo Test": "Programmed servo motors for precise angular control."
-    };
-
-    const sessions = {
-        's1': 'Session 1: Animation (OpenToonz)',
-        's2': 'Session 2: Programming (Scratch/TurboWarp)',
-        's3': 'Session 3: Robotics (Arduino)'
-    };
-
-    const sessionMap = {
-        's1': ['Layers Split', 'Loop Logic', 'Export Success'],
-        's2': ['Arrow Logic', 'Mouse Follow', 'Debugging'],
-        's3': ['Resistor Safety', 'Upload Mode', 'Servo Test']
-    };
-
-    function addStudentPageToPDF(doc, student) {
-        doc.setFontSize(18);
-        doc.setFont("helvetica", "bold");
-        doc.text("Little KITEs Special Training - Performance Report", 105, 15, null, null, "center");
-        
-        doc.setFontSize(12);
-        doc.setFont("helvetica", "normal");
-        doc.text(`Name: ${student.name}`, 15, 30);
-        doc.text(`Admission No: ${student.adm}`, 15, 37);
-        doc.text(`School Unit: ${db.currentSchool}`, 15, 44);
-        doc.line(15, 48, 195, 48);
-
-        let yPos = 60;
-        doc.setFont("helvetica", "bold");
-        doc.text("Skills Acquired & Verified:", 15, 55);
-        yPos += 5;
-
-        const p = db.progress[student.id];
-        let hasSkills = false;
-
-        if (p) {
-            Object.keys(sessions).forEach(sessKey => {
-                if (p[sessKey]) {
-                    const doneActs = sessionMap[sessKey].filter(act => p[sessKey][act] && p[sessKey][act].status === 'Done');
-                    if (doneActs.length > 0) {
-                        yPos += 7;
-                        doc.setFont("helvetica", "bold");
-                        doc.setFontSize(11);
-                        doc.text(sessions[sessKey], 15, yPos);
-                        yPos += 2;
-                        doc.setFont("helvetica", "normal");
-                        doc.setFontSize(10);
-                        doneActs.forEach(act => {
-                            yPos += 6;
-                            const stars = p[sessKey][act].stars;
-                            const desc = skillMap[act] || act;
-                            doc.text(`• ${desc} (Rating: ${stars}/3)`, 20, yPos);
-                        });
-                        hasSkills = true;
-                    }
+                    div.onclick = () => openStudentTracker(s);
+                    container.appendChild(div);
+                    serialNo++;
                 }
             });
         }
 
-        if(!hasSkills) {
-            yPos += 10;
-            doc.text("No completed activities recorded yet.", 20, yPos);
-        }
-        yPos += 30;
-        doc.line(15, yPos, 80, yPos);
-        doc.text("Trainer Signature", 15, yPos + 5);
-    }
-
-    function generatePDF() {
-        const sel = document.getElementById('report-student-select');
-        const sId = sel.value;
-        if(!sId) { alert("Please select a student first."); return; }
-        
-        const student = db.students.find(s => s.id == sId);
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        
-        addStudentPageToPDF(doc, student);
-        doc.save(`Report_${student.adm}.pdf`);
-    }
-
-    function generateBatchPDF() {
-        if(!confirm(`Generate reports for ALL students in ${db.currentSchool}? This might take a moment.`)) return;
-
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        const students = getCurrentSchoolStudents();
-
-        if(students.length === 0) {
-            alert("No students found.");
-            return;
+        // --- Tracker ---
+        function openStudentTracker(student) {
+            currentStudent = student;
+            document.getElementById('tracker-student-name').innerText = student.name;
+            document.getElementById('tracker-student-id').innerText = `ADM: ${student.adm} | ${db.currentSchool}`;
+            showView('tracker');
+            refreshTrackerUI();
         }
 
-        students.forEach((s, index) => {
-            if(index > 0) doc.addPage();
-            addStudentPageToPDF(doc, s);
-        });
+        function refreshTrackerUI() {
+            if (!currentStudent) return;
 
-        const date = new Date().toISOString().slice(0,10);
-        doc.save(`Full_Batch_Report_${db.currentSchool}_${date}.pdf`);
-    }
+            updateButtonState('s1', 'Layers Split', 'btn-1-3', 'Layers Split?');
+            updateButtonState('s1', 'Export Success', 'btn-1-1', 'Exported?');
+            renderStars('s1', 'Loop Logic', 'stars-1-2');
 
-    init();
+            updateButtonState('s2', 'Arrow Logic', 'btn-2-1', 'Logic OK?');
+            updateButtonState('s2', 'Mouse Follow', 'btn-2-2', 'Follows?');
+            updateButtonState('s2', 'Debugging', 'btn-2-3', 'Fixed Bug?');
+
+            updateSafetyButton('s3', 'Resistor Safety', 'btn-3-1');
+            updateButtonState('s3', 'Upload Mode', 'btn-3-2', 'Mode OK?');
+            updateButtonState('s3', 'Servo Test', 'btn-3-3', 'Servo OK?');
+        }
+
+        function getProgress(session, activity) {
+            if (!currentStudent) return null;
+            if (!db.progress[currentStudent.id]) return null;
+            if (!db.progress[currentStudent.id][session]) return null;
+            return db.progress[currentStudent.id][session][activity];
+        }
+
+        function setProgress(session, activity, status, stars = 0) {
+            if (!db.progress[currentStudent.id]) db.progress[currentStudent.id] = {};
+            if (!db.progress[currentStudent.id][session]) db.progress[currentStudent.id][session] = {};
+
+            db.progress[currentStudent.id][session][activity] = { status, stars };
+            save();
+            refreshTrackerUI();
+        }
+
+        function toggleActivity(session, activity) {
+            const current = getProgress(session, activity);
+            if (current && current.status === 'Done') {
+                setProgress(session, activity, 'Not Done', 0);
+            } else {
+                setProgress(session, activity, 'Done', 3);
+            }
+        }
+
+        function updateButtonState(session, activity, btnId, defaultText) {
+            const btn = document.getElementById(btnId);
+            const data = getProgress(session, activity);
+
+            if (data && data.status === 'Done') {
+                btn.classList.add('done');
+                btn.innerText = "✓ " + defaultText;
+            } else {
+                btn.classList.remove('done');
+                btn.innerText = defaultText;
+            }
+        }
+
+        function toggleSafety(session, activity) {
+            const current = getProgress(session, activity);
+            if (current && current.status === 'Done') {
+                setProgress(session, activity, 'Not Done', 0);
+            } else {
+                setProgress(session, activity, 'Done', 3);
+            }
+        }
+
+        function updateSafetyButton(session, activity, btnId) {
+            const btn = document.getElementById(btnId);
+            const data = getProgress(session, activity);
+
+            if (data && data.status === 'Done') {
+                btn.classList.add('safe');
+                btn.innerText = "✅ SAFE & VERIFIED";
+            } else {
+                btn.classList.remove('safe');
+                btn.innerText = "⚠️ HAZARD CHECK";
+            }
+        }
+
+        function renderStars(session, activity, containerId) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            const data = getProgress(session, activity);
+            const currentStars = data ? data.stars : 0;
+
+            for (let i = 1; i <= 3; i++) {
+                const btn = document.createElement('button');
+                btn.className = `star-btn ${i <= currentStars ? 'active' : ''}`;
+                btn.innerText = '★';
+                btn.onclick = () => setProgress(session, activity, 'Done', i);
+                container.appendChild(btn);
+            }
+        }
+
+        // --- Reports ---
+        function renderReportSelect() {
+            const sel = document.getElementById('report-student-select');
+            sel.innerHTML = '<option value="">-- Select Student --</option>';
+            const visibleStudents = getCurrentSchoolStudents();
+            visibleStudents.forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s.id;
+                opt.textContent = `${s.adm} - ${s.name}`;
+                sel.appendChild(opt);
+            });
+        }
+
+        function downloadBackup() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", "little_kites_backup.json");
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        }
+
+        // REPORT LOGIC
+        const skillMap = {
+            "Layers Split": "Proficient in OpenToonz layer management and scene composition.",
+            "Loop Logic": "Demonstrated understanding of animation loops and frame timing.",
+            "Export Success": "Mastered OpenToonz export settings and video rendering.",
+            "Arrow Logic": "Implemented coordinate-based sprite movement (X/Y axis logic).",
+            "Mouse Follow": "Created interactive event loops and mouse-tracking logic.",
+            "Debugging": "Demonstrated logical thinking by identifying/fixing code bugs.",
+            "Resistor Safety": "Safely constructed LED circuits with proper resistor placement.",
+            "Upload Mode": "Successfully compiled and uploaded code to Arduino hardware.",
+            "Servo Test": "Programmed servo motors for precise angular control."
+        };
+
+        const sessions = {
+            's1': 'Session 1: Animation (OpenToonz)',
+            's2': 'Session 2: Programming (Scratch/TurboWarp)',
+            's3': 'Session 3: Robotics (Arduino)'
+        };
+
+        const sessionMap = {
+            's1': ['Layers Split', 'Loop Logic', 'Export Success'],
+            's2': ['Arrow Logic', 'Mouse Follow', 'Debugging'],
+            's3': ['Resistor Safety', 'Upload Mode', 'Servo Test']
+        };
+
+        function addStudentPageToPDF(doc, student) {
+            doc.setFontSize(18);
+            doc.setFont("helvetica", "bold");
+            doc.text("Little KITEs Special Training - Performance Report", 105, 15, null, null, "center");
+
+            doc.setFontSize(12);
+            doc.setFont("helvetica", "normal");
+            doc.text(`Name: ${student.name}`, 15, 30);
+            doc.text(`Admission No: ${student.adm}`, 15, 37);
+            doc.text(`School Unit: ${db.currentSchool}`, 15, 44);
+            doc.line(15, 48, 195, 48);
+
+            let yPos = 60;
+            doc.setFont("helvetica", "bold");
+            doc.text("Skills Acquired & Verified:", 15, 55);
+            yPos += 5;
+
+            const p = db.progress[student.id];
+            let hasSkills = false;
+
+            if (p) {
+                Object.keys(sessions).forEach(sessKey => {
+                    if (p[sessKey]) {
+                        const doneActs = sessionMap[sessKey].filter(act => p[sessKey][act] && p[sessKey][act].status === 'Done');
+                        if (doneActs.length > 0) {
+                            yPos += 7;
+                            doc.setFont("helvetica", "bold");
+                            doc.setFontSize(11);
+                            doc.text(sessions[sessKey], 15, yPos);
+                            yPos += 2;
+                            doc.setFont("helvetica", "normal");
+                            doc.setFontSize(10);
+                            doneActs.forEach(act => {
+                                yPos += 6;
+                                const stars = p[sessKey][act].stars;
+                                const desc = skillMap[act] || act;
+                                doc.text(`• ${desc} (Rating: ${stars}/3)`, 20, yPos);
+                            });
+                            hasSkills = true;
+                        }
+                    }
+                });
+            }
+
+            if (!hasSkills) {
+                yPos += 10;
+                doc.text("No completed activities recorded yet.", 20, yPos);
+            }
+            yPos += 30;
+            doc.line(15, yPos, 80, yPos);
+            doc.text("Trainer Signature", 15, yPos + 5);
+        }
+
+        function generatePDF() {
+            const sel = document.getElementById('report-student-select');
+            const sId = sel.value;
+            if (!sId) { alert("Please select a student first."); return; }
+
+            const student = db.students.find(s => s.id == sId);
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            addStudentPageToPDF(doc, student);
+            doc.save(`Report_${student.adm}.pdf`);
+        }
+
+        function generateBatchPDF() {
+            if (!confirm(`Generate reports for ALL students in ${db.currentSchool}? This might take a moment.`)) return;
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const students = getCurrentSchoolStudents();
+
+            if (students.length === 0) {
+                alert("No students found.");
+                return;
+            }
+
+            students.forEach((s, index) => {
+                if (index > 0) doc.addPage();
+                addStudentPageToPDF(doc, s);
+            });
+
+            const date = new Date().toISOString().slice(0, 10);
+            doc.save(`Full_Batch_Report_${db.currentSchool}_${date}.pdf`);
+        }
+
+        init();
     </script>
 
 </body>
