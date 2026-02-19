@@ -1,8 +1,8 @@
 import sqlite3
 import pandas as pd
 
-# Provided raw data
-raw_data = """
+# Data for Rajahs H.S.S Nileshwar
+rajahs_data = """
 1,ABDUL WAJID PALAKKI,38266
 2,ABHINAV K T,38272
 3,ADHISH A,36274
@@ -48,6 +48,36 @@ raw_data = """
 43,VAIGA S,38427
 """
 
+# Data for G V H S S KOTTAPURAM
+kottapuram_data = """
+1,AYISHA.P.P,6407
+2,AYSHATHUL LUBNA. E.K,6551
+3,FATHIMA ABNA.P.P,6279
+4,FATHIMA HIBA.P,6510
+5,FATHIMA.,6543
+6,FATHIMA.E.K,6300
+7,FATHIMATH AFLA .A,6514
+8,FATHIMATH RAZVANA. A.P,6517
+9,HASEENA K M,6425
+10,MOHAMMED ARIF. C,6505
+11,MOHAMMED K N,6506
+12,MOHAMMED NISHAN,6503
+13,MUHAMED MUFEED MUSTHAFA T,6523
+14,MUHAMMAD IMTHIYAZ . A,6327
+15,MUHAMMED NABEER.P,6564
+16,MUHAMMED SHIFAS,6513
+17,MUHAMMED SINAN,6292
+18,NAJA FATHIMA C K,6667
+19,NAJA FATHIMA E K,6268
+20,SAFA.P.M.H,6518
+21,ZAINABA.P,6562
+"""
+
+CONTRIBUTING_SCHOOLS = [
+    {"name": "Rajahs H.S.S Nileshwar", "data": rajahs_data},
+    {"name": "G V H S S KOTTAPURAM", "data": kottapuram_data}
+]
+
 def seed_database(db_path="students.db"):
     conn = sqlite3.connect(db_path)
     c = conn.cursor()
@@ -74,23 +104,41 @@ def seed_database(db_path="students.db"):
         )
     ''')
     
-    # Process Raw Data
-    lines = raw_data.strip().split('\n')
-    for line in lines:
-        parts = line.split(',')
-        if len(parts) >= 3:
-            sl_no = parts[0].strip()
-            name = parts[1].strip()
-            adm_no = parts[2].strip()
-            
-            try:
-                c.execute("INSERT OR IGNORE INTO students (admission_no, name) VALUES (?, ?)", (adm_no, name))
-            except sqlite3.IntegrityError:
-                pass
+    # Process Raw Data for each school
+    for school in CONTRIBUTING_SCHOOLS:
+        school_name = school["name"]
+        raw_cvs_data = school["data"]
+        
+        print(f"Seeding data for {school_name}...")
+        lines = raw_cvs_data.strip().split('\n')
+        for line in lines:
+            parts = line.split(',')
+            if len(parts) >= 3:
+                # Format: Sl No, Name, Admission No
+                sl_no = parts[0].strip()
+                name = parts[1].strip()
+                adm_no = parts[2].strip()
+                
+                try:
+                    # Check if student exists to avoid overwriting school_unit on existing ones if we just want to insert new
+                    # But if we want to ensure school_unit is correct, we might want to update it.
+                    # For now, let's use INSERT OR IGNORE and assume unique admission_no
+                    # However, we need to insert school_unit now. 
+                    
+                    # We can use INSERT OR REPLACE if we want to update details, but that might wipe other fields if they existed.
+                    # Let's stick to INSERT OR IGNORE but include school_unit.
+                    
+                    c.execute("INSERT OR IGNORE INTO students (admission_no, name, school_unit) VALUES (?, ?, ?)", (adm_no, name, school_name))
+                    
+                    # If we want to update the school_unit for existing students (in case of data correction), we could do:
+                    # c.execute("UPDATE students SET school_unit = ? WHERE admission_no = ?", (school_name, adm_no))
+                    
+                except sqlite3.IntegrityError:
+                    pass
                 
     conn.commit()
     conn.close()
-    print("Database seeded successfully with Rajahs H.S.S Nileshwar student list.")
+    print("Database seeded successfully.")
 
 if __name__ == "__main__":
     seed_database()

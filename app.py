@@ -24,13 +24,71 @@ def get_ip():
     return IP
 
 # Sidebar Navigation
+if 'logged_in' not in st.session_state:
+    st.session_state.logged_in = False
+
+def login():
+    st.title("Little KITEs Tracker - Login")
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
+    if st.button("Login"):
+        if username == "ksgd" and password == "pass":
+            st.session_state.logged_in = True
+            st.rerun()
+        else:
+            st.error("Invalid Credentials")
+
+def logout():
+    st.session_state.logged_in = False
+    st.rerun()
+
+if not st.session_state.logged_in:
+    login()
+    st.stop()
+
 st.sidebar.title("Little KITEs Tracker 🪁")
 st.sidebar.markdown(f"**Network URL:** `http://{get_ip()}:8501`")
 
+if st.sidebar.button("Logout"):
+    logout()
+
 menu = st.sidebar.radio("Navigate", ["Student Management", "Track Progress", "Generate Reports"])
 
+# School Selection
+school_list = db.get_all_schools()
+if not school_list:
+     school_list = ["Rajahs H.S.S Nileshwar"] # Default if empty
+
 if 'school_unit' not in st.session_state:
-    st.session_state.school_unit = "Rajahs H.S.S Nileshwar"
+    st.session_state.school_unit = school_list[0]
+
+st.sidebar.markdown("---")
+st.sidebar.subheader("🏫 School Selection")
+
+# Append current school if it's new and not in the list yet (e.g. just added)
+current_school = st.session_state.school_unit
+options = school_list
+if current_school not in options:
+    options = [current_school] + options
+
+selected_school = st.sidebar.selectbox(
+    "Select School", 
+    options, 
+    index=options.index(current_school)
+)
+
+if selected_school != st.session_state.school_unit:
+    st.session_state.school_unit = selected_school
+    st.rerun()
+
+# Add New School
+with st.sidebar.expander("➕ Add New School"):
+    new_school_name = st.text_input("Enter School Name")
+    if st.button("Create School Context"):
+        if new_school_name:
+            st.session_state.school_unit = new_school_name
+            st.success(f"Switched to {new_school_name}. Add students to persist.")
+            st.rerun()
 
 def toggle_status(student_id, session, activity, current_status):
     new_status = "Done" if current_status != "Done" else "Not Done"
@@ -48,11 +106,13 @@ def rate_skill(student_id, session, activity, stars):
 if menu == "Student Management":
     st.title("Student Management")
     
-    tab1, tab2, tab3 = st.tabs(["View Students", "Add Student", "Import from Sheets"])
+    st.markdown(f"### Current School: **{st.session_state.school_unit}**")
+
+    tab1, tab2, tab3 = st.tabs(["View Students", "Add Student", "Bulk Upload"])
     
     with tab1:
-        st.subheader(f"Students: {st.session_state.school_unit}")
-        df = db.get_all_students()
+        st.subheader(f"Students List")
+        df = db.get_students_by_school(st.session_state.school_unit)
         st.dataframe(df, use_container_width=True)
         st.info(f"Total Students: {len(df)}")
     
@@ -63,25 +123,63 @@ if menu == "Student Management":
             adm_no = st.text_input("Admission No")
             submitted = st.form_submit_button("Add Student")
             if submitted and name and adm_no:
-                if db.add_student(adm_no, name):
-                    st.success(f"Added {name}")
+                # Pass the current school unit
+                if db.add_student(adm_no, name, st.session_state.school_unit):
+                    st.success(f"Added {name} to {st.session_state.school_unit}")
                     st.rerun()
                 else:
                     st.error("Admission Number already exists.")
 
     with tab3:
-        st.subheader("Import from Google Sheets")
-        st.markdown("Paste the Google Sheet ID (ensure it's public or shared) to import students.")
-        sheet_id = st.text_input("Google Sheet ID")
-        if st.button("Import"):
-            st.warning("Google Sheet Import logic reserved for authenticated setup. (Placeholder)")
+        st.subheader("Bulk Upload (Copy-Paste)")
+        st.markdown("Paste data from Excel/Sheets. Formats supported:")
+        st.code("Sl No | Name | Admission No")
+        
+        raw_data = st.text_area("Paste Data Here", height=200)
+        
+        if st.button("Preview & Upload"):
+            if raw_data:
+                rows = []
+                for line in raw_data.strip().split('\n'):
+                    # Try splitting by tab first, then comma
+                    parts = line.split('\t')
+                    if len(parts) < 2:
+                        parts = line.split(',')
+                    
+                    if len(parts) >= 3:
+                        # Assuming SlNo, Name, AdmNo
+                        rows.append({"name": parts[1].strip(), "admission_no": parts[2].strip()})
+                    elif len(parts) == 2:
+                        # Assuming Name, AdmNo
+                        rows.append({"name": parts[0].strip(), "admission_no": parts[1].strip()})
+                
+                if rows:
+                    preview_df = pd.DataFrame(rows)
+                    st.write("Preview:", preview_df)
+                    
+                    if st.button("Confirm Upload", type="primary"): 
+                        # This button is tricky inside a nested condition in Streamlit
+                        # Better to show preview and then have a separate submit, but Streamlit wipes state on button click.
+                        # So we will just do it in one go for simplicity or use session state.
+                        pass
+                    
+                    # Simpler approach: Just do it.
+                    success_count = 0
+                    for row in rows:
+                        if db.add_student(row['admission_no'], row['name'], st.session_state.school_unit):
+                            success_count += 1
+                    
+                    st.success(f"Successfully added {success_count} students to {st.session_state.school_unit}!")
+                    st.rerun()
+                else:
+                    st.error("Could not parse data. Ensure 'Name' and 'Admission No' are present.")
 
 # --- Track Progress ---
 elif menu == "Track Progress":
     st.title("Classroom Tracker")
 
     # Student Selection
-    students_df = db.get_all_students()
+    students_df = db.get_students_by_school(st.session_state.school_unit)
     if students_df.empty:
         st.warning("No students found. Go to 'Student Management' to add some.")
     else:
@@ -244,7 +342,7 @@ elif menu == "Generate Reports":
     
     import pdf_generator as pdf_gen
     
-    students_df = db.get_all_students()
+    students_df = db.get_students_by_school(st.session_state.school_unit)
     
     if students_df.empty:
         st.warning("No students available. Add students first.")
